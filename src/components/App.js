@@ -2,6 +2,8 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux';
 import { handleInitialData } from '../actions/shared';
 import Dashboard from './Dashboard';
+// loading component being added, we need to add it inside our app render method so it can be used by our whole app
+import LoadingBar from 'react-redux-loading';
 
 class App extends Component {
   componentDidMount() {
@@ -11,6 +13,7 @@ class App extends Component {
   render() {
     return (
       <div>
+        <LoadingBar />
         { // only load the dashboard if the loading property is true
           this.props.loading ? null : <Dashboard></Dashboard>
         }
