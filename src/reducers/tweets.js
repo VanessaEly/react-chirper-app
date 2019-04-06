@@ -3,7 +3,7 @@
 // Each reducer slices its own part of state
 
 // Reducers have the following signature: (previousState, action) => newState
-import { RECEIVE_TWEETS, TOGGLE_TWEET } from '../actions/tweets';
+import { RECEIVE_TWEETS, TOGGLE_TWEET, ADD_TWEET } from '../actions/tweets';
 
 // Default state is set to an empty object
 export default function tweets(state = {}, action) {
@@ -11,6 +11,26 @@ export default function tweets(state = {}, action) {
         case RECEIVE_TWEETS :
             // returning the current state merged with the tweets of our action
             return { ...state, ...action.tweets };
+        case ADD_TWEET :
+            const { tweet } = action;
+            let replyingTo = {};
+
+            if (tweet.replyingTo !== null) {
+                replyingTo = {
+                    [tweet.replyingTo]: {
+                        // everything that the reply was before, but adding a new reply
+                        ...state[tweet.replyingTo],
+                        // adding the new reply to the replies list
+                        replies: state[tweet.replyingTo].replies.concat([tweet.id]),
+                    }
+                }
+            }
+            return {
+                ...state,
+                // adding the new tweet to the tweet list
+                [action.tweet.id]: action.tweet,
+                ...replyingTo,
+            }
         case TOGGLE_TWEET :
             // spread all the previous tweets on the new object
             return {

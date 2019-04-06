@@ -1,9 +1,13 @@
-import React, { Component } from 'react'
+import React, { Component, Fragment } from 'react'
+import { BrowserRouter as Router, Route }from 'react-router-dom';
 import { connect } from 'react-redux';
 import { handleInitialData } from '../actions/shared';
 import Dashboard from './Dashboard';
+import NewTweet from './NewTweet';
+import TweetPage from './TweetPage';
 // loading component being added, we need to add it inside our app render method so it can be used by our whole app
 import LoadingBar from 'react-redux-loading';
+import Nav from './Nav';
 
 class App extends Component {
   componentDidMount() {
@@ -12,12 +16,27 @@ class App extends Component {
 
   render() {
     return (
-      <div>
-        <LoadingBar />
-        { // only load the dashboard if the loading property is true
-          this.props.loading ? null : <Dashboard></Dashboard>
+      <Router>
+        {
+          // Fragment allows us to pass a single child to the router element (which is required, as it is in the render
+          // method, without needing to create an extra div in our DOM)
         }
-      </div>
+        <Fragment>
+          <LoadingBar />
+          <div className='container'>
+            <Nav />
+            { // only load the dashboard if the loading property is true
+              this.props.loading
+                ? null
+                : <div>
+                    <Route path='/' exact component={Dashboard} />
+                    <Route path='/tweet/:id' component={TweetPage} />
+                    <Route path='/new' component={NewTweet} />
+                  </div>
+            }
+          </div>
+        </Fragment>
+      </Router>
     )
   }
 }
