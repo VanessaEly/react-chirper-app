@@ -1,3 +1,5 @@
+// REDUCER function - functions that take an state and an action and and reduce that to a brand new state
+// A reducer must be a pure function
 // A Reducer describes how an application's state changes. You’ll often see the Object Spread Operator (...)
 // used inside of a reducer because a reducer must return a new object instead of mutating the old state.
 // Each reducer slices its own part of state
